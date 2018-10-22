@@ -37,6 +37,7 @@ defmodule Absinthe.Subscription do
   Add Absinthe.Subscription to your process tree.
   """
   defdelegate start_link(pubsub), to: Subscription.Supervisor
+  defdelegate start_link(pubsub, pool_size), to: Subscription.Supervisor
 
   def child_spec(pubsub) do
     %{
