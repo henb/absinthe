@@ -8,6 +8,8 @@ defmodule Absinthe.Phase.Subscription.SubscribeSelf do
 
   @spec run(any, Keyword.t()) :: {:ok, Blueprint.t()}
   def run(blueprint, options) do
+    IO.inspect(blueprint)
+
     with %{type: :subscription} = op <- Blueprint.current_operation(blueprint) do
       do_subscription(op, blueprint, options)
     else
@@ -97,15 +99,22 @@ defmodule Absinthe.Phase.Subscription.SubscribeSelf do
   end
 
   defp ensure_pubsub!(context) do
+
     case Absinthe.Subscription.extract_pubsub(context) do
       {:ok, pubsub} ->
         pubsub
 
-      _ ->
+      e ->
+        IO.inspect(context)
+        IO.inspect(e)
+
         raise """
         Pubsub not configured!
 
         Subscriptions require a configured pubsub module.
+        #{inspect(e)}
+
+        #{inspect(context)}
         """
     end
   end
